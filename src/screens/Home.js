@@ -1,7 +1,14 @@
 import * as React from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import {
+  Animated,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import { colors, device, gStyle } from '../constants';
+import { colors, device, gStyle, images } from '../constants';
 
 // components
 import AlbumsHorizontal from '../components/AlbumsHorizontal';
@@ -26,6 +33,13 @@ function Home() {
     extrapolate: 'clamp'
   });
 
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good morning';
+    if (hour < 18) return 'Good afternoon';
+    return 'Good evening';
+  };
+
   return (
     <React.Fragment>
       {device.iPhoneNotch && (
@@ -33,7 +47,7 @@ function Home() {
       )}
 
       <Animated.View style={[styles.containerHeader, { opacity: opacityOut }]}>
-        <FontAwesome color={colors.white} name="cog" size={28} />
+        <FontAwesome color={colors.white} name="cog" size={24} />
       </Animated.View>
 
       <Animated.ScrollView
@@ -45,15 +59,26 @@ function Home() {
         showsVerticalScrollIndicator={false}
         style={gStyle.container}
       >
-        <View style={gStyle.spacer16} />
+        <View style={styles.containerGreeting}>
+          <Text style={styles.greetingText}>{getGreeting()}</Text>
+        </View>
 
-        <AlbumsHorizontal data={recentlyPlayed} heading="Recently played" />
+        <View style={styles.containerGrid}>
+          {recentlyPlayed.slice(0, 6).map((item) => (
+            <TouchableOpacity
+              activeOpacity={gStyle.activeOpacity}
+              key={item.id}
+              style={styles.gridItem}
+            >
+              <Image source={images[item.image]} style={styles.gridImage} />
+              <Text numberOfLines={2} style={styles.gridTitle}>
+                {item.title}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
 
-        <AlbumsHorizontal
-          data={heavyRotation}
-          heading="Your heavy rotation"
-          tagline="The music you've had on repeat this month."
-        />
+        <AlbumsHorizontal data={heavyRotation} heading="Your heavy rotation" />
 
         <AlbumsHorizontal
           data={jumpBackIn}
@@ -84,6 +109,44 @@ const styles = StyleSheet.create({
     top: 0,
     width: '100%',
     zIndex: 10
+  },
+  containerGreeting: {
+    paddingBottom: 16,
+    paddingHorizontal: 16,
+    paddingTop: device.iPhoneNotch ? 110 : 70
+  },
+  greetingText: {
+    ...gStyle.text_lg,
+    color: colors.text_primary,
+    fontWeight: '700'
+  },
+  containerGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginBottom: 24,
+    paddingHorizontal: 16
+  },
+  gridItem: {
+    alignItems: 'center',
+    backgroundColor: colors.player_bg,
+    borderRadius: 4,
+    flexDirection: 'row',
+    height: 56,
+    marginBottom: 8,
+    overflow: 'hidden',
+    width: '48.5%'
+  },
+  gridImage: {
+    height: 56,
+    width: 56
+  },
+  gridTitle: {
+    ...gStyle.text_xs,
+    color: colors.text_primary,
+    flex: 1,
+    fontWeight: '600',
+    paddingHorizontal: 8
   }
 });
 

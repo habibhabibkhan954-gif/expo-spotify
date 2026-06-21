@@ -61,6 +61,15 @@ export default {
 
   // text
   // ///////////////////////////////////////////////////////////////////////////
+  text_xs: { fontFamily: fonts.spotifyRegular, fontSize: 10 },
+  text_sm: { fontFamily: fonts.spotifyRegular, fontSize: 12 },
+  text_base: { fontFamily: fonts.spotifyRegular, fontSize: 14 },
+  text_md: { fontFamily: fonts.spotifyBold, fontSize: 16 },
+  text_lg: { fontFamily: fonts.spotifyBold, fontSize: 20 },
+  text_xl: { fontFamily: fonts.spotifyBold, fontSize: 24 },
+  text_xxl: { fontFamily: fonts.spotifyBold, fontSize: 32 },
+
+  // legacy mapping
   textSpotify10: { fontFamily: fonts.spotifyRegular, fontSize: 10 },
   textSpotify12: { fontFamily: fonts.spotifyRegular, fontSize: 12 },
   textSpotify14: { fontFamily: fonts.spotifyRegular, fontSize: 14 },

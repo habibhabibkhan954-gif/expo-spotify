@@ -8,9 +8,23 @@ export default {
   blackBlur: '#161616',
 
   // spotify colors
-  blackBg: '#121212',
+  background: '#000000',
+  surface: '#121212',
+  elevated: '#1A1A1A',
+  player_bg: '#282828',
+  accent_green: '#1DB954',
+  accent_green_dim: '#1AA34A',
+  text_primary: '#FFFFFF',
+  text_secondary: '#B3B3B3',
+  text_tertiary: '#727272',
+  divider: '#282828',
+  icon_active: '#1DB954',
+  icon_inactive: '#B3B3B3',
+
+  // legacy / mapping
+  blackBg: '#000000',
   transparent: 'transparent',
-  brandPrimary: '#57b660',
+  brandPrimary: '#1DB954',
   grey: '#282828',
   greyInactive: '#b3b3b3',
   greyLight: '#bebebe',

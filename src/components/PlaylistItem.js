@@ -24,16 +24,17 @@ PlaylistItem.propTypes = {
 
 const styles = StyleSheet.create({
   playlistItem: {
-    borderRadius: 6,
+    borderRadius: 8,
     flex: 1,
     height: 98,
-    marginBottom: 24,
-    marginRight: 24,
+    marginBottom: 16,
+    marginRight: 16,
+    overflow: 'hidden',
     paddingLeft: 12,
     paddingTop: 12
   },
   playlistTitle: {
-    ...gStyle.textSpotifyBold22,
+    ...gStyle.text_md,
     color: colors.white
   }
 });

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../constants';
 
 // navigation stacks
@@ -10,11 +11,6 @@ import StackLibrary from './StackLibrary';
 // components
 import CustomTabBar from '../components/CustomTabBar';
 
-// icons
-import SvgTabHome from '../icons/Svg.TabHome';
-import SvgTabLibrary from '../icons/Svg.TabLibrary';
-import SvgTabSearch from '../icons/Svg.TabSearch';
-
 const Tab = createBottomTabNavigator();
 
 function TabNavigation() {
@@ -22,19 +18,30 @@ function TabNavigation() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarIcon: ({ active }) => {
-          let icon = <SvgTabHome active={active} />;
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
 
-          if (route.name === 'StackSearch') {
-            icon = <SvgTabSearch active={active} />;
+          if (route.name === 'StackHome') {
+            iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === 'StackSearch') {
+            iconName = focused ? 'search' : 'search-outline';
           } else if (route.name === 'StackLibrary') {
-            icon = <SvgTabLibrary active={active} />;
+            iconName = focused ? 'library' : 'library-outline';
           }
 
-          return icon;
+          return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: colors.white,
-        tabBarInactiveTintColor: colors.greyInactive
+        tabBarActiveTintColor: colors.text_primary,
+        tabBarInactiveTintColor: colors.text_secondary,
+        tabBarStyle: {
+          backgroundColor: colors.background,
+          borderTopColor: colors.divider,
+          borderTopWidth: 0.5
+        },
+        tabBarLabelStyle: {
+          fontSize: 10,
+          fontWeight: '500'
+        }
       })}
       tabBar={(props) => <CustomTabBar {...props} />}
     >

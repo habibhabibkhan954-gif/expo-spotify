@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Animated, Image, StyleSheet, Text, View } from 'react-native';
 import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
 import { colors, device, func, gStyle, images } from '../constants';
@@ -19,11 +19,19 @@ function ModalMusicPlayer(props) {
   // local state
   const [favorited, setFavorited] = React.useState(false);
   const [paused, setPaused] = React.useState(true);
+  const albumArtScale = React.useRef(new Animated.Value(1)).current;
 
   const { navigation } = props;
 
+  React.useEffect(() => {
+    Animated.spring(albumArtScale, {
+      toValue: paused ? 0.85 : 1,
+      useNativeDriver: true
+    }).start();
+  }, [paused]);
+
   // ui state
-  const favoriteColor = favorited ? colors.brandPrimary : colors.white;
+  const favoriteColor = favorited ? colors.accent_green : colors.white;
   const favoriteIcon = favorited ? 'heart' : 'heart-o';
   const iconPlay = paused ? 'play-circle' : 'pause-circle';
   const timePast = func.formatTime(0);
@@ -31,15 +39,29 @@ function ModalMusicPlayer(props) {
 
   return (
     <View style={gStyle.container}>
+      <Image
+        source={images[currentSongData.image]}
+        style={StyleSheet.absoluteFill}
+        blurRadius={50}
+      />
+      <View style={[StyleSheet.absoluteFill, styles.backgroundOverlay]} />
+
       <ModalHeader
-        left={<Feather color={colors.greyLight} name="chevron-down" />}
+        left={<Feather color={colors.text_primary} name="chevron-down" />}
         leftPress={() => navigation.goBack(null)}
-        right={<Feather color={colors.greyLight} name="more-horizontal" />}
+        right={<Feather color={colors.text_primary} name="more-horizontal" />}
         text={currentSongData.album}
       />
 
       <View style={gStyle.p3}>
-        <Image source={images[currentSongData.image]} style={styles.image} />
+        <Animated.View
+          style={[
+            { transform: [{ scale: albumArtScale }] },
+            styles.containerAlbumArt
+          ]}
+        >
+          <Image source={images[currentSongData.image]} style={styles.image} />
+        </Animated.View>
 
         <View style={[gStyle.flexRowSpace, styles.containerDetails]}>
           <View style={styles.containerSong}>
@@ -61,7 +83,8 @@ function ModalMusicPlayer(props) {
             minimumValue={0}
             maximumValue={currentSongData.length}
             minimumTrackTintColor={colors.white}
-            maximumTrackTintColor={colors.grey3}
+            maximumTrackTintColor="rgba(255,255,255,0.2)"
+            thumbTintColor={colors.white}
           />
           <View style={styles.containerTime}>
             <Text style={styles.time}>{timePast}</Text>
@@ -71,7 +94,7 @@ function ModalMusicPlayer(props) {
 
         <View style={styles.containerControls}>
           <TouchIcon
-            icon={<Feather color={colors.greyLight} name="shuffle" />}
+            icon={<Feather color={colors.text_secondary} name="shuffle" />}
             onPress={() => null}
           />
           <View style={gStyle.flexRowCenterAlign}>
@@ -94,19 +117,22 @@ function ModalMusicPlayer(props) {
             />
           </View>
           <TouchIcon
-            icon={<Feather color={colors.greyLight} name="repeat" />}
+            icon={<Feather color={colors.text_secondary} name="repeat" />}
             onPress={() => null}
           />
         </View>
 
         <View style={styles.containerBottom}>
           <TouchIcon
-            icon={<Feather color={colors.greyLight} name="speaker" />}
+            icon={<Feather color={colors.text_secondary} name="speaker" />}
             onPress={() => null}
           />
           <TouchIcon
             icon={
-              <MaterialIcons color={colors.greyLight} name="playlist-play" />
+              <MaterialIcons
+                color={colors.text_secondary}
+                name="playlist-play"
+              />
             }
             onPress={() => null}
           />
@@ -122,10 +148,17 @@ ModalMusicPlayer.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  backgroundOverlay: {
+    backgroundColor: 'rgba(0,0,0,0.5)'
+  },
+  containerAlbumArt: {
+    alignSelf: 'center'
+  },
   image: {
-    height: device.width - 48,
+    borderRadius: 8,
+    height: device.width - 64,
     marginVertical: device.iPhoneNotch ? 36 : 8,
-    width: device.width - 48
+    width: device.width - 64
   },
   containerDetails: {
     marginBottom: 16
