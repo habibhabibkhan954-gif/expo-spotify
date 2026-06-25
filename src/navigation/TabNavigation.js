@@ -1,4 +1,5 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../constants';
@@ -13,24 +14,56 @@ import CustomTabBar from '../components/CustomTabBar';
 
 const Tab = createBottomTabNavigator();
 
+function TabBarIconHome({ focused, color, size }) {
+  return (
+    <Ionicons
+      name={focused ? 'home' : 'home-outline'}
+      size={size}
+      color={color}
+    />
+  );
+}
+TabBarIconHome.propTypes = {
+  color: PropTypes.string.isRequired,
+  focused: PropTypes.bool.isRequired,
+  size: PropTypes.number.isRequired
+};
+
+function TabBarIconSearch({ focused, color, size }) {
+  return (
+    <Ionicons
+      name={focused ? 'search' : 'search-outline'}
+      size={size}
+      color={color}
+    />
+  );
+}
+TabBarIconSearch.propTypes = {
+  color: PropTypes.string.isRequired,
+  focused: PropTypes.bool.isRequired,
+  size: PropTypes.number.isRequired
+};
+
+function TabBarIconLibrary({ focused, color, size }) {
+  return (
+    <Ionicons
+      name={focused ? 'library' : 'library-outline'}
+      size={size}
+      color={color}
+    />
+  );
+}
+TabBarIconLibrary.propTypes = {
+  color: PropTypes.string.isRequired,
+  focused: PropTypes.bool.isRequired,
+  size: PropTypes.number.isRequired
+};
+
 function TabNavigation() {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
+      screenOptions={{
         headerShown: false,
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
-
-          if (route.name === 'StackHome') {
-            iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'StackSearch') {
-            iconName = focused ? 'search' : 'search-outline';
-          } else if (route.name === 'StackLibrary') {
-            iconName = focused ? 'library' : 'library-outline';
-          }
-
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
         tabBarActiveTintColor: colors.text_primary,
         tabBarInactiveTintColor: colors.text_secondary,
         tabBarStyle: {
@@ -42,28 +75,31 @@ function TabNavigation() {
           fontSize: 10,
           fontWeight: '500'
         }
-      })}
-      tabBar={(props) => <CustomTabBar {...props} />}
+      }}
+      tabBar={CustomTabBar}
     >
       <Tab.Screen
         name="StackHome"
         component={StackHome}
         options={{
-          tabBarLabel: 'Home'
+          tabBarLabel: 'Home',
+          tabBarIcon: TabBarIconHome
         }}
       />
       <Tab.Screen
         name="StackSearch"
         component={StackSearch}
         options={{
-          tabBarLabel: 'Search'
+          tabBarLabel: 'Search',
+          tabBarIcon: TabBarIconSearch
         }}
       />
       <Tab.Screen
         name="StackLibrary"
         component={StackLibrary}
         options={{
-          tabBarLabel: 'Library'
+          tabBarLabel: 'Library',
+          tabBarIcon: TabBarIconLibrary
         }}
       />
     </Tab.Navigator>

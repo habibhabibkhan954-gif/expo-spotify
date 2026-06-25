@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     backgroundColor: colors.surface,
-    borderRadius: 4,
+    borderRadius: 8,
     height: 140,
     overflow: 'hidden',
     width: 140

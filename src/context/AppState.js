@@ -1,53 +1,38 @@
-import React from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 // context
 import Context from './index';
 
-class AppState extends React.Component {
-  constructor() {
-    super();
+function AppState({ children }) {
+  const [state, setState] = useState({
+    currentSongData: {
+      album: 'Swimming',
+      artist: 'Mac Miller',
+      image: 'swimming',
+      length: 312,
+      title: 'So It Goes'
+    },
+    isLoading: true,
+    showMusicBar: true
+  });
 
-    this.state = {
-      currentSongData: {
-        album: 'Swimming',
-        artist: 'Mac Miller',
-        image: 'swimming',
-        length: 312,
-        title: 'So It Goes'
-      },
-      isLoading: true,
-      showMusicBar: true
-    };
-
-    this.updateState = this.updateState.bind(this);
-  }
-
-  updateState(key, value) {
-    this.setState({
+  const updateState = useCallback((key, value) => {
+    setState((prevState) => ({
+      ...prevState,
       [key]: value
-    });
-  }
+    }));
+  }, []);
 
-  render() {
-    const { children } = this.props;
+  const value = useMemo(
+    () => ({
+      ...state,
+      updateState
+    }),
+    [state, updateState]
+  );
 
-    // app state
-    const { currentSongData, isLoading, showMusicBar } = this.state;
-
-    return (
-      <Context.Provider
-        value={{
-          currentSongData,
-          isLoading,
-          showMusicBar,
-          updateState: this.updateState
-        }}
-      >
-        {children}
-      </Context.Provider>
-    );
-  }
+  return <Context.Provider value={value}>{children}</Context.Provider>;
 }
 
 AppState.propTypes = {
