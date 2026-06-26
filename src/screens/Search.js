@@ -120,8 +120,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: 4,
     flexDirection: 'row',
-    paddingLeft: 16,
-    paddingVertical: 12
+    height: 40,
+    paddingLeft: 16
   },
   searchPlaceholderText: {
     ...gStyle.text_base,

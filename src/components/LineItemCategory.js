@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import {
   Feather,
   Entypo,
@@ -8,7 +8,7 @@ import {
   MaterialCommunityIcons,
   FontAwesome
 } from '@expo/vector-icons';
-import { colors, gStyle } from '../constants';
+import { colors, gStyle, images } from '../constants';
 
 function LineItemCategory({
   icon,
@@ -59,7 +59,17 @@ function LineItemCategory({
       style={styles.container}
     >
       <View style={gStyle.flexRowCenterAlign}>
-        {iconDisplay}
+        {icon ? (
+          iconDisplay
+        ) : (
+          <Image
+            source={images.albumSwimming}
+            style={[
+              styles.image,
+              iconLibrary === 'Artist' ? styles.imageCircle : styles.imageRadius
+            ]}
+          />
+        )}
         <Text style={styles.title}>{title}</Text>
       </View>
 
@@ -93,9 +103,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 24,
-    paddingVertical: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
     width: '100%'
+  },
+  image: {
+    height: 56,
+    width: 56
+  },
+  imageRadius: {
+    borderRadius: 4
+  },
+  imageCircle: {
+    borderRadius: 28
   },
   title: {
     ...gStyle.textSpotify14,

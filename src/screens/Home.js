@@ -8,6 +8,7 @@ import {
   View
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { colors, device, gStyle, images } from '../constants';
 
 // components
@@ -50,6 +51,11 @@ function Home() {
         <FontAwesome color={colors.white} name="cog" size={24} />
       </Animated.View>
 
+      <LinearGradient
+        colors={['rgba(29, 185, 84, 0.3)', 'transparent']}
+        style={styles.linearGradient}
+      />
+
       <Animated.ScrollView
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
@@ -91,6 +97,12 @@ function Home() {
 }
 
 const styles = StyleSheet.create({
+  linearGradient: {
+    height: 300,
+    position: 'absolute',
+    top: 0,
+    width: '100%'
+  },
   iPhoneNotch: {
     backgroundColor: colors.black70,
     height: 44,

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors, gStyle } from '../constants';
 
 function PlaylistItem({ bgColor, onPress, title }) {
@@ -11,6 +11,7 @@ function PlaylistItem({ bgColor, onPress, title }) {
       style={[styles.playlistItem, { backgroundColor: bgColor }]}
     >
       <Text style={styles.playlistTitle}>{title}</Text>
+      <View style={styles.imageBox} />
     </TouchableOpacity>
   );
 }
@@ -35,7 +36,18 @@ const styles = StyleSheet.create({
   },
   playlistTitle: {
     ...gStyle.text_md,
-    color: colors.white
+    color: colors.white,
+    width: '70%'
+  },
+  imageBox: {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 4,
+    bottom: -10,
+    height: 64,
+    position: 'absolute',
+    right: -15,
+    transform: [{ rotate: '25deg' }],
+    width: 64
   }
 });
 
