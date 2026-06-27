@@ -14,28 +14,34 @@ import Context from '../context';
 
 function ModalMusicPlayer(props) {
   // get main app state
-  const { currentSongData } = React.useContext(Context);
+  const {
+    currentSongData,
+    togglePlayPause,
+    isPlaying,
+    position,
+    duration,
+    seekAudio
+  } = React.useContext(Context);
 
   // local state
   const [favorited, setFavorited] = React.useState(false);
-  const [paused, setPaused] = React.useState(true);
   const albumArtScale = React.useRef(new Animated.Value(1)).current;
 
   const { navigation } = props;
 
   React.useEffect(() => {
     Animated.spring(albumArtScale, {
-      toValue: paused ? 0.85 : 1,
+      toValue: isPlaying ? 1 : 0.85,
       useNativeDriver: true
     }).start();
-  }, [paused]);
+  }, [isPlaying]);
 
   // ui state
   const favoriteColor = favorited ? colors.accent_green : colors.white;
   const favoriteIcon = favorited ? 'heart' : 'heart-o';
-  const iconPlay = paused ? 'play-circle' : 'pause-circle';
-  const timePast = func.formatTime(0);
-  const timeLeft = func.formatTime(currentSongData.length);
+  const iconPlay = isPlaying ? 'pause-circle' : 'play-circle';
+  const timePast = func.formatTime(position / 1000);
+  const timeLeft = func.formatTime((duration - position) / 1000);
 
   return (
     <View style={gStyle.container}>
@@ -81,7 +87,9 @@ function ModalMusicPlayer(props) {
         <View style={styles.containerVolume}>
           <Slider
             minimumValue={0}
-            maximumValue={currentSongData.length}
+            maximumValue={duration}
+            value={position}
+            onSlidingComplete={seekAudio}
             minimumTrackTintColor={colors.white}
             maximumTrackTintColor="rgba(255,255,255,0.2)"
             thumbTintColor={colors.white}
@@ -107,7 +115,7 @@ function ModalMusicPlayer(props) {
               <TouchIcon
                 icon={<FontAwesome color={colors.white} name={iconPlay} />}
                 iconSize={64}
-                onPress={() => setPaused(!paused)}
+                onPress={togglePlayPause}
               />
             </View>
             <TouchIcon

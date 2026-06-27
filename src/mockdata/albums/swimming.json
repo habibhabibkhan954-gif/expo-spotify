@@ -5,18 +5,18 @@
   "released": 2018,
   "title": "Swimming",
   "tracks": [
-    { "title": "Come Back to Earth", "seconds": 161 },
-    { "title": "Hurt Feelings", "seconds": 245 },
-    { "title": "What's the Use?", "seconds": 288 },
-    { "title": "Perfecto", "seconds": 215 },
-    { "title": "Self Care", "seconds": 345 },
-    { "title": "Wings", "seconds": 250 },
-    { "title": "Ladders", "seconds": 287 },
-    { "title": "Small Worlds", "seconds": 271 },
-    { "title": "Conversation Pt. 1", "seconds": 210 },
-    { "title": "Dunno", "seconds": 237 },
-    { "title": "Jet Fuel", "seconds": 345 },
-    { "title": "2009", "seconds": 347 },
-    { "title": "So It Goes", "seconds": 312 }
+    { "title": "Come Back to Earth", "seconds": 161, "url": "https://p.scdn.co/mp3-preview/733917412e690757a7d4d39e38d6df0223709b1f" },
+    { "title": "Hurt Feelings", "seconds": 245, "url": "https://p.scdn.co/mp3-preview/386407767356ca62b21708892f39886a" },
+    { "title": "What's the Use?", "seconds": 288, "url": "https://p.scdn.co/mp3-preview/b68e983441991475c7b39678129f17b3" },
+    { "title": "Perfecto", "seconds": 215, "url": "https://p.scdn.co/mp3-preview/9434e9f733658253a811c034563a35e8" },
+    { "title": "Self Care", "seconds": 345, "url": "https://p.scdn.co/mp3-preview/13a2c070444583907c08836c05a1d746" },
+    { "title": "Wings", "seconds": 250, "url": "https://p.scdn.co/mp3-preview/2d890538f90659616e045c5890885e34" },
+    { "title": "Ladders", "seconds": 287, "url": "https://p.scdn.co/mp3-preview/92534571777263b61036329e7f7813a4" },
+    { "title": "Small Worlds", "seconds": 271, "url": "https://p.scdn.co/mp3-preview/894c2598379435b62a6b2089b09a6332" },
+    { "title": "Conversation Pt. 1", "seconds": 210, "url": "https://p.scdn.co/mp3-preview/2179b007306233a05c742f1f8b1c4e79" },
+    { "title": "Dunno", "seconds": 237, "url": "https://p.scdn.co/mp3-preview/6e6443c5b96791404094191c964177b9" },
+    { "title": "Jet Fuel", "seconds": 345, "url": "https://p.scdn.co/mp3-preview/51e3c880854d66289b4f74d0a273e8e2" },
+    { "title": "2009", "seconds": 347, "url": "https://p.scdn.co/mp3-preview/9986348877209e75558066f122557e4e" },
+    { "title": "So It Goes", "seconds": 312, "url": "https://p.scdn.co/mp3-preview/e51d9f8c6f10c660633633e9d8995a89" }
   ]
 }

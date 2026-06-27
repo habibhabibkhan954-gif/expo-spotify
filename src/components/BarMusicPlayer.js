@@ -5,16 +5,22 @@ import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 import { colors, device, gStyle, images } from '../constants';
 
+// context
+import Context from '../context';
+
 function BarMusicPlayer({ song }) {
   const navigation = useNavigation();
+  const { togglePlayPause, isPlaying, position, duration } =
+    React.useContext(Context);
 
   // local state
   const [favorited, setFavorited] = React.useState(false);
-  const [paused, setPaused] = React.useState(true);
 
   const favoriteColor = favorited ? colors.accent_green : colors.white;
   const favoriteIcon = favorited ? 'heart' : 'heart-o';
-  const iconPlay = paused ? 'play' : 'pause';
+  const iconPlay = isPlaying ? 'pause' : 'play';
+
+  const progress = duration > 0 ? (position / duration) * 100 : 0;
 
   return (
     <TouchableOpacity
@@ -47,7 +53,7 @@ function BarMusicPlayer({ song }) {
 
         <TouchableOpacity
           activeOpacity={gStyle.activeOpacity}
-          onPress={() => setPaused(!paused)}
+          onPress={togglePlayPause}
           style={styles.containerIcon}
         >
           <FontAwesome color={colors.white} name={iconPlay} size={24} />
@@ -55,7 +61,7 @@ function BarMusicPlayer({ song }) {
       </View>
 
       <View style={styles.progressBarBackground}>
-        <View style={styles.progressBarFill} />
+        <View style={[styles.progressBarFill, { width: `${progress}%` }]} />
       </View>
     </TouchableOpacity>
   );
