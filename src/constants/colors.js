@@ -8,9 +8,9 @@ export default {
   blackBlur: '#161616',
 
   // spotify colors
-  background: '#000000',
-  surface: '#121212',
-  elevated: '#1A1A1A',
+  background: '#121212',
+  surface: '#282828',
+  elevated: '#282828',
   player_bg: '#282828',
   accent_green: '#1DB954',
   accent_green_dim: '#1AA34A',
