@@ -1,9 +1,9 @@
 name: BUILD APK NEW Automatic
 
 on:
-  push:                # no branches filter — runs on push to any branch
-  pull_request:        # runs on PRs targeting any branch
-  workflow_dispatch:   # manual trigger
+  push:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -23,18 +23,21 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: 'yarn'
 
       - name: Install dependencies
         run: yarn install
 
       - name: Prebuild Android
-        run: npx expo prebuild --platform android
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        run: npx expo prebuild --platform android --no-install
 
       - name: Make Gradle wrapper executable
         run: chmod +x android/gradlew
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          build-root-directory: android
 
       - name: Build (assembleRelease) using wrapper
         working-directory: android
