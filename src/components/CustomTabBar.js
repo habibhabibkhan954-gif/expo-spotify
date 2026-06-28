@@ -38,7 +38,7 @@ function CustomTabBar({ descriptors, navigation, state }) {
               : defaultLabl;
 
           const isFocused = state.index === index;
-          const color = isFocused ? colors.white : colors.greyInactive;
+          const color = isFocused ? colors.text_primary : colors.text_secondary;
 
           // custom icon
           const Icon = options.tabBarIcon;
@@ -74,7 +74,7 @@ function CustomTabBar({ descriptors, navigation, state }) {
               onLongPress={onLongPress}
               style={styles.containerTab}
             >
-              <Icon active={isFocused} />
+              <Icon focused={isFocused} color={color} size={24} />
               <Text style={[styles.label, { color }]}>{label}</Text>
             </TouchableOpacity>
           );
@@ -94,16 +94,19 @@ CustomTabBar.propTypes = {
 const styles = StyleSheet.create({
   container: {
     ...gStyle.flexRowCenterAlign,
-    backgroundColor: colors.grey,
-    paddingBottom: device.iPhoneNotch ? 24 : 16,
-    paddingTop: 12
+    backgroundColor: colors.background,
+    borderTopColor: colors.divider,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    paddingBottom: device.iPhoneNotch ? 32 : 12,
+    paddingTop: 8
   },
   containerTab: {
     ...gStyle.flex1,
     ...gStyle.flexCenter
   },
   label: {
-    ...gStyle.textSpotify12,
+    ...gStyle.text_xs,
+    fontWeight: '500',
     paddingTop: 4
   }
 });

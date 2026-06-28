@@ -1,9 +1,9 @@
 name: BUILD APK NEW Automatic
 
 on:
-  push:                # no branches filter — runs on push to any branch
-  pull_request:        # runs on PRs targeting any branch
-  workflow_dispatch:   # manual trigger
+  push:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -19,13 +19,28 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Prebuild Android
+        run: npx expo prebuild --platform android --no-install
 
       - name: Make Gradle wrapper executable
-        run: chmod +x ./gradlew
+        run: chmod +x android/gradlew
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          build-root-directory: android
 
       - name: Build (assembleRelease) using wrapper
+        working-directory: android
         run: ./gradlew assembleRelease
         env:
           RELEASE_KEYSTORE: release.keystore
@@ -37,4 +52,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: release-apk-${{ github.run_number }}
-          path: build/outputs/apk/release/*.apk
+          path: android/app/build/outputs/apk/release/*.apk

@@ -1,20 +1,26 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
-import { colors, device, gStyle } from '../constants';
+import { colors, device, gStyle, images } from '../constants';
+
+// context
+import Context from '../context';
 
 function BarMusicPlayer({ song }) {
   const navigation = useNavigation();
+  const { togglePlayPause, isPlaying, position, duration } =
+    React.useContext(Context);
 
   // local state
   const [favorited, setFavorited] = React.useState(false);
-  const [paused, setPaused] = React.useState(true);
 
-  const favoriteColor = favorited ? colors.brandPrimary : colors.white;
+  const favoriteColor = favorited ? colors.accent_green : colors.white;
   const favoriteIcon = favorited ? 'heart' : 'heart-o';
-  const iconPlay = paused ? 'play-circle' : 'pause-circle';
+  const iconPlay = isPlaying ? 'pause' : 'play';
+
+  const progress = duration > 0 ? (position / duration) * 100 : 0;
 
   return (
     <TouchableOpacity
@@ -22,40 +28,41 @@ function BarMusicPlayer({ song }) {
       onPress={() => navigation.navigate('ModalMusicPlayer')}
       style={styles.container}
     >
-      <TouchableOpacity
-        activeOpacity={gStyle.activeOpacity}
-        hitSlop={{ bottom: 10, left: 10, right: 10, top: 10 }}
-        onPress={() => setFavorited(!favorited)}
-        style={styles.containerIcon}
-      >
-        <FontAwesome color={favoriteColor} name={favoriteIcon} size={20} />
-      </TouchableOpacity>
-
-      {song && (
-        <View>
+      <View style={gStyle.flexRowCenterAlign}>
+        {song && <Image source={images[song.image]} style={styles.image} />}
+        {song && (
           <View style={styles.containerSong}>
-            <Text style={styles.title}>{`${song.title} · `}</Text>
-            <Text style={styles.artist}>{song.artist}</Text>
+            <Text ellipsizeMode="tail" numberOfLines={1} style={styles.title}>
+              {song.title}
+            </Text>
+            <Text ellipsizeMode="tail" numberOfLines={1} style={styles.artist}>
+              {song.artist}
+            </Text>
           </View>
-          <View style={[gStyle.flexRowCenter, gStyle.mTHalf]}>
-            <FontAwesome
-              color={colors.brandPrimary}
-              name="bluetooth-b"
-              size={14}
-            />
-            <Text style={styles.device}>Caleb&apos;s Beatsx</Text>
-          </View>
-        </View>
-      )}
+        )}
+      </View>
 
-      <TouchableOpacity
-        activeOpacity={gStyle.activeOpacity}
-        hitSlop={{ bottom: 10, left: 10, right: 10, top: 10 }}
-        onPress={() => setPaused(!paused)}
-        style={styles.containerIcon}
-      >
-        <FontAwesome color={colors.white} name={iconPlay} size={28} />
-      </TouchableOpacity>
+      <View style={gStyle.flexRowCenterAlign}>
+        <TouchableOpacity
+          activeOpacity={gStyle.activeOpacity}
+          onPress={() => setFavorited(!favorited)}
+          style={styles.containerIcon}
+        >
+          <FontAwesome color={favoriteColor} name={favoriteIcon} size={20} />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          activeOpacity={gStyle.activeOpacity}
+          onPress={togglePlayPause}
+          style={styles.containerIcon}
+        >
+          <FontAwesome color={colors.white} name={iconPlay} size={24} />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.progressBarBackground}>
+        <View style={[styles.progressBarFill, { width: `${progress}%` }]} />
+      </View>
     </TouchableOpacity>
   );
 }
@@ -68,43 +75,64 @@ BarMusicPlayer.propTypes = {
   // optional
   song: PropTypes.shape({
     artist: PropTypes.string,
+    image: PropTypes.string,
     title: PropTypes.string
   })
 };
 
 const styles = StyleSheet.create({
   container: {
-    alignSelf: 'center',
-    backgroundColor: colors.grey,
-    borderBottomColor: colors.blackBg,
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    alignItems: 'center',
+    backgroundColor: colors.player_bg,
+    borderRadius: 8,
+    bottom: device.iPhoneNotch ? 90 : 60,
     flexDirection: 'row',
+    height: 56,
     justifyContent: 'space-between',
-    paddingVertical: 8,
-    width: '100%'
+    left: 0,
+    marginHorizontal: 8,
+    paddingRight: 8,
+    position: 'absolute',
+    right: 0,
+    zIndex: 100
+  },
+  image: {
+    borderRadius: 4,
+    height: 40,
+    marginLeft: 8,
+    width: 40
   },
   containerIcon: {
     ...gStyle.flexCenter,
-    width: 50
+    width: 40
   },
   containerSong: {
-    ...gStyle.flexRowCenter,
-    overflow: 'hidden',
-    width: device.width - 100
+    marginLeft: 12,
+    width: device.width - 180
   },
   title: {
-    ...gStyle.textSpotify12,
-    color: colors.white
+    ...gStyle.text_sm,
+    color: colors.text_primary,
+    fontWeight: '600'
   },
   artist: {
-    ...gStyle.textSpotify12,
-    color: colors.greyLight
+    ...gStyle.text_xs,
+    color: colors.text_secondary
   },
-  device: {
-    ...gStyle.textSpotify10,
-    color: colors.brandPrimary,
-    marginLeft: 4,
-    textTransform: 'uppercase'
+  progressBarBackground: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 1,
+    bottom: 0,
+    height: 2,
+    left: 8,
+    position: 'absolute',
+    right: 8
+  },
+  progressBarFill: {
+    backgroundColor: colors.text_primary,
+    borderRadius: 1,
+    height: 2,
+    width: '30%'
   }
 });
 

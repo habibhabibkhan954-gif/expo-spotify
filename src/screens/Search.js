@@ -118,27 +118,28 @@ const styles = StyleSheet.create({
   searchPlaceholder: {
     alignItems: 'center',
     backgroundColor: colors.white,
-    borderRadius: 6,
+    borderRadius: 4,
     flexDirection: 'row',
-    paddingLeft: 16,
-    paddingVertical: 16
+    height: 40,
+    paddingLeft: 16
   },
   searchPlaceholderText: {
-    ...gStyle.textSpotify16,
-    color: colors.blackBg
+    ...gStyle.text_base,
+    color: colors.text_tertiary,
+    fontWeight: '600'
   },
   sectionHeading: {
-    ...gStyle.textSpotifyBold18,
-    color: colors.white,
-    marginBottom: 24,
-    marginLeft: 24,
+    ...gStyle.text_md,
+    color: colors.text_primary,
+    marginBottom: 16,
+    marginLeft: 16,
     marginTop: 16
   },
   containerRow: {
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginLeft: 24
+    marginLeft: 16
   },
   containerColumn: {
     width: '50%'

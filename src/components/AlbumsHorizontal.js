@@ -16,7 +16,11 @@ function AlbumsHorizontal({ data, heading, tagline }) {
 
   return (
     <View style={styles.container}>
-      {heading && <Text style={styles.heading}>{heading}</Text>}
+      {heading && (
+        <View style={styles.containerHeader}>
+          <Text style={styles.heading}>{heading}</Text>
+        </View>
+      )}
       {tagline && <Text style={styles.tagline}>{tagline}</Text>}
 
       <FlatList
@@ -27,16 +31,22 @@ function AlbumsHorizontal({ data, heading, tagline }) {
         renderItem={({ item }) => (
           <TouchableOpacity
             activeOpacity={gStyle.activeOpacity}
-            hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}
             onPress={() => navigation.navigate('Album', { title: item.title })}
             style={styles.item}
           >
-            <View style={styles.image}>
+            <View style={styles.imageContainer}>
               {item.image && (
                 <Image source={images[item.image]} style={styles.image} />
               )}
             </View>
-            <Text style={styles.title}>{item.title}</Text>
+            <Text numberOfLines={1} style={styles.title}>
+              {item.title}
+            </Text>
+            {item.artist && (
+              <Text numberOfLines={1} style={styles.artist}>
+                {item.artist}
+              </Text>
+            )}
           </TouchableOpacity>
         )}
         showsHorizontalScrollIndicator={false}
@@ -61,38 +71,51 @@ AlbumsHorizontal.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 32,
+    marginBottom: 24,
     width: '100%'
+  },
+  containerHeader: {
+    paddingBottom: 8,
+    paddingHorizontal: 16
   },
   containerContent: {
     paddingLeft: 16
   },
   heading: {
-    ...gStyle.textSpotifyBold18,
-    color: colors.white,
-    paddingBottom: 6,
-    textAlign: 'center'
+    ...gStyle.text_md,
+    color: colors.text_primary
   },
   tagline: {
-    ...gStyle.textSpotify12,
-    color: colors.greyInactive,
-    paddingBottom: 6,
-    textAlign: 'center'
+    ...gStyle.text_sm,
+    color: colors.text_secondary,
+    paddingBottom: 12,
+    paddingHorizontal: 16
   },
   item: {
     marginRight: 16,
-    width: 148
+    width: 140
+  },
+  imageContainer: {
+    backgroundColor: colors.surface,
+    borderRadius: 8,
+    height: 140,
+    overflow: 'hidden',
+    width: 140
   },
   image: {
-    backgroundColor: colors.greyLight,
-    height: 148,
-    width: 148
+    height: 140,
+    width: 140
   },
   title: {
-    ...gStyle.textSpotifyBold12,
-    color: colors.white,
-    marginTop: 4,
-    textAlign: 'center'
+    ...gStyle.text_base,
+    color: colors.text_primary,
+    fontWeight: '600',
+    marginTop: 8
+  },
+  artist: {
+    ...gStyle.text_sm,
+    color: colors.text_secondary,
+    marginTop: 2
   }
 });
 

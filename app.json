@@ -21,6 +21,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "android": {
+      "package": "com.calebnance.expospotify",
       "versionCode": 50
     },
     "ios": {

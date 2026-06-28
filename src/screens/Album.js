@@ -29,7 +29,7 @@ function Album({ navigation, route }) {
   const { title } = route.params;
 
   // get main app state
-  const { currentSongData, showMusicBar, updateState } =
+  const { currentSongData, showMusicBar, updateState, playSong } =
     React.useContext(Context);
 
   // local state
@@ -74,7 +74,7 @@ function Album({ navigation, route }) {
     setSong(songData.title);
 
     // update main state
-    updateState('currentSongData', songData);
+    playSong(songData);
   };
 
   // album data not set?
