@@ -1,4 +1,5 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { colors } from '../constants';
 
@@ -17,46 +18,66 @@ import SvgTabSearch from '../icons/Svg.TabSearch';
 
 const Tab = createBottomTabNavigator();
 
+function TabBarIconHome({ active }) {
+  return <SvgTabHome active={active} />;
+}
+
+TabBarIconHome.propTypes = {
+  active: PropTypes.bool.isRequired
+};
+
+function TabBarIconSearch({ active }) {
+  return <SvgTabSearch active={active} />;
+}
+
+TabBarIconSearch.propTypes = {
+  active: PropTypes.bool.isRequired
+};
+
+function TabBarIconLibrary({ active }) {
+  return <SvgTabLibrary active={active} />;
+}
+
+TabBarIconLibrary.propTypes = {
+  active: PropTypes.bool.isRequired
+};
+
+function renderTabBar(props) {
+  return <CustomTabBar {...props} />;
+}
+
 function TabNavigation() {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
+      screenOptions={{
         headerShown: false,
-        tabBarIcon: ({ active }) => {
-          let icon = <SvgTabHome active={active} />;
-
-          if (route.name === 'StackSearch') {
-            icon = <SvgTabSearch active={active} />;
-          } else if (route.name === 'StackLibrary') {
-            icon = <SvgTabLibrary active={active} />;
-          }
-
-          return icon;
-        },
         tabBarActiveTintColor: colors.white,
         tabBarInactiveTintColor: colors.greyInactive
-      })}
-      tabBar={(props) => <CustomTabBar {...props} />}
+      }}
+      tabBar={renderTabBar}
     >
       <Tab.Screen
         name="StackHome"
         component={StackHome}
         options={{
-          tabBarLabel: 'Home'
+          tabBarLabel: 'Home',
+          tabBarIcon: TabBarIconHome
         }}
       />
       <Tab.Screen
         name="StackSearch"
         component={StackSearch}
         options={{
-          tabBarLabel: 'Search'
+          tabBarLabel: 'Search',
+          tabBarIcon: TabBarIconSearch
         }}
       />
       <Tab.Screen
         name="StackLibrary"
         component={StackLibrary}
         options={{
-          tabBarLabel: 'Library'
+          tabBarLabel: 'Library',
+          tabBarIcon: TabBarIconLibrary
         }}
       />
     </Tab.Navigator>

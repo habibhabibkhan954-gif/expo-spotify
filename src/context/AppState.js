@@ -1,53 +1,37 @@
-import React from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 // context
 import Context from './index';
 
-class AppState extends React.Component {
-  constructor() {
-    super();
+function AppState({ children }) {
+  const [currentSongData, setCurrentSongData] = useState({
+    album: 'Swimming',
+    artist: 'Mac Miller',
+    image: 'swimming',
+    length: 312,
+    title: 'So It Goes'
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [showMusicBar, setShowMusicBar] = useState(true);
 
-    this.state = {
-      currentSongData: {
-        album: 'Swimming',
-        artist: 'Mac Miller',
-        image: 'swimming',
-        length: 312,
-        title: 'So It Goes'
-      },
-      isLoading: true,
-      showMusicBar: true
-    };
+  const updateState = useCallback((key, value) => {
+    if (key === 'currentSongData') setCurrentSongData(value);
+    if (key === 'isLoading') setIsLoading(value);
+    if (key === 'showMusicBar') setShowMusicBar(value);
+  }, []);
 
-    this.updateState = this.updateState.bind(this);
-  }
+  const value = useMemo(
+    () => ({
+      currentSongData,
+      isLoading,
+      showMusicBar,
+      updateState
+    }),
+    [currentSongData, isLoading, showMusicBar, updateState]
+  );
 
-  updateState(key, value) {
-    this.setState({
-      [key]: value
-    });
-  }
-
-  render() {
-    const { children } = this.props;
-
-    // app state
-    const { currentSongData, isLoading, showMusicBar } = this.state;
-
-    return (
-      <Context.Provider
-        value={{
-          currentSongData,
-          isLoading,
-          showMusicBar,
-          updateState: this.updateState
-        }}
-      >
-        {children}
-      </Context.Provider>
-    );
-  }
+  return <Context.Provider value={value}>{children}</Context.Provider>;
 }
 
 AppState.propTypes = {
